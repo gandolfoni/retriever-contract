@@ -96,7 +96,7 @@ pub fn execute(
     }
 }
 
-pub fn handle_withdraw_balance(
+pub fn handle_withdraw_balance(waw
     deps: DepsMut,
     env: Env,
     info: MessageInfo,
@@ -257,14 +257,14 @@ pub fn _update_approvals(
 }
 
 pub fn try_send_nft (
-    deps: DepsMut, 
-    env: Env, 
-    info: MessageInfo, 
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
     contract: String,
     token_id: String,
     msg: Binary
 ) -> Result<Response, ContractError> {
-    
+
     // Unwrap message first
     let _msgs: Vec<CosmosMsg> = vec![from_binary(&msg)?];
 
@@ -281,13 +281,13 @@ pub fn try_send_nft (
 }
 
 pub fn transfer_nft (
-    deps: DepsMut, 
-    env: Env, 
-    info: MessageInfo, 
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
     recipient: String,
     token_id: String
 ) -> Result<Response, ContractError> {
-    
+
     _try_transfer_nft(deps, env, info, recipient.clone(), token_id.clone())?;
 
     Ok(
@@ -331,13 +331,13 @@ fn check_can_send(
     }
 
     Err(ContractError::Unauthorized {})
-    
+
 }
 
 pub fn _try_transfer_nft (
-    deps: DepsMut, 
-    env: Env, 
-    info: MessageInfo, 
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
     recipient: String,
     token_id: String
 ) -> Result<Response, ContractError> {
@@ -366,7 +366,7 @@ pub fn _try_transfer_nft (
     }
 
     let address = checked.unwrap();
-    
+
     let new_name = Name {
         id: real_name.id,
         expires: real_name.expires,
@@ -399,10 +399,10 @@ pub fn _try_transfer_nft (
 
 
 pub fn try_add_time(
-    deps: DepsMut, 
-    _env: Env, 
-    info: MessageInfo, 
-    name: String, 
+    deps: DepsMut,
+    _env: Env,
+    info: MessageInfo,
+    name: String,
     years: u32
 )-> Result<Response, ContractError> {
     let store = deps.storage;
@@ -464,23 +464,23 @@ pub fn try_add_time(
     )
 }
 pub fn try_update_name(
-    deps: DepsMut, 
-    env: Env, 
-    info: MessageInfo, 
-    name: String, 
-    avatar_url: Option<String>, 
-    terra_address: Option<String>, 
-    secret_address: Option<String>, 
-    crypto_org_address: Option<String>, 
-    starname_address: Option<String>, 
-    persistence_address: Option<String>, 
-    kava_address: Option<String>, 
-    website: Option<String>, 
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
+    name: String,
+    avatar_url: Option<String>,
+    terra_address: Option<String>,
+    secret_address: Option<String>,
+    crypto_org_address: Option<String>,
+    starname_address: Option<String>,
+    persistence_address: Option<String>,
+    kava_address: Option<String>,
+    website: Option<String>,
     email: Option<String>,
-    twitter: Option<String>, 
-    telegram: Option<String>, 
-    discord: Option<String>, 
-    instagram: Option<String>, 
+    twitter: Option<String>,
+    telegram: Option<String>,
+    discord: Option<String>,
+    instagram: Option<String>,
     reddit: Option<String>
 ) -> Result<Response, ContractError> {
 
@@ -506,28 +506,28 @@ pub fn try_update_name(
 
 
 
-    let data = Name { 
-        id: existing_name.id, 
-        expires: existing_name.expires, 
-        owner: existing_name.owner, 
+    let data = Name {
+        id: existing_name.id,
+        expires: existing_name.expires,
+        owner: existing_name.owner,
         approvals: vec![],
-        avatar_url: avatar_url, 
+        avatar_url: avatar_url,
         terra_address: terra_address,
         secret_address: secret_address,
         crypto_org_address: crypto_org_address,
         starname_address: starname_address,
         persistence_address: persistence_address,
         kava_address: kava_address,
-        website: website, 
-        email: email, 
-        twitter: twitter, 
-        telegram: telegram, 
-        discord: discord, 
-        instagram: instagram, 
-        reddit: reddit 
+        website: website,
+        email: email,
+        twitter: twitter,
+        telegram: telegram,
+        discord: discord,
+        instagram: instagram,
+        reddit: reddit
     };
 
-    
+
 
     JNS.save(store, &name.clone(), &data)?;
 
@@ -539,24 +539,24 @@ pub fn try_update_name(
 }
 
 pub fn try_register_name(
-    deps: DepsMut, 
-    env: Env, 
-    info: MessageInfo, 
-    name: String, 
-    years: u32, 
-    avatar_url: Option<String>, 
-    terra_address: Option<String>, 
-    secret_address: Option<String>, 
-    crypto_org_address: Option<String>, 
-    starname_address: Option<String>, 
-    persistence_address: Option<String>, 
-    kava_address: Option<String>, 
-    website: Option<String>, 
+    deps: DepsMut,
+    env: Env,
+    info: MessageInfo,
+    name: String,
+    years: u32,
+    avatar_url: Option<String>,
+    terra_address: Option<String>,
+    secret_address: Option<String>,
+    crypto_org_address: Option<String>,
+    starname_address: Option<String>,
+    persistence_address: Option<String>,
+    kava_address: Option<String>,
+    website: Option<String>,
     email: Option<String>,
-    twitter: Option<String>, 
-    telegram: Option<String>, 
-    discord: Option<String>, 
-    instagram: Option<String>, 
+    twitter: Option<String>,
+    telegram: Option<String>,
+    discord: Option<String>,
+    instagram: Option<String>,
     reddit: Option<String>
 ) -> Result<Response, ContractError> {
 
@@ -611,31 +611,31 @@ pub fn try_register_name(
         return Err(ContractError::Std(StdError::generic_err(format!("Not enough juno being sent. Wanted: {}", total_cost))));
     }
 
-    
+
 
     let expiration_date = current_time + ( state.blocks_per_year * years as u64) ; // creates the name data
-    let data = Name { 
-        id: name.clone(), 
-        expires: expiration_date, 
-        owner: info.sender, 
+    let data = Name {
+        id: name.clone(),
+        expires: expiration_date,
+        owner: info.sender,
         approvals: vec![],
-        avatar_url: avatar_url, 
+        avatar_url: avatar_url,
         terra_address: terra_address,
-        secret_address: secret_address, 
-        crypto_org_address: crypto_org_address, 
-        starname_address: starname_address, 
-        persistence_address: persistence_address, 
-        kava_address: kava_address, 
-        website: website, 
-        email: email, 
-        twitter: twitter, 
-        telegram: telegram, 
-        discord: discord, 
-        instagram: instagram, 
-        reddit: reddit 
+        secret_address: secret_address,
+        crypto_org_address: crypto_org_address,
+        starname_address: starname_address,
+        persistence_address: persistence_address,
+        kava_address: kava_address,
+        website: website,
+        email: email,
+        twitter: twitter,
+        telegram: telegram,
+        discord: discord,
+        instagram: instagram,
+        reddit: reddit
     };
 
-    
+
 
     JNS.save(store, &name.clone(), &data)?;
 
@@ -709,7 +709,7 @@ fn query_nft_info( deps: Deps, env:Env, token_id: String ) -> StdResult<NftInfoR
         description: "An IBC Name Resolver living on the JUNO network.".to_string(),
         image: format!("{}/{}", state.meta_url, token_id),
     })
-} 
+}
 
 
 fn query_contract_info() -> StdResult<ContractInfoResponse> {
@@ -717,11 +717,11 @@ fn query_contract_info() -> StdResult<ContractInfoResponse> {
         name: "JACKAL Name Service".to_string(),
         symbol: "RNS".to_string(),
     })
-} 
+}
 
 fn query_num_tokens() -> StdResult<NumTokensResponse> {
     Ok(NumTokensResponse {tokens: 0})
-} 
+}
 
 fn query_all_approvals(
     deps: Deps,
@@ -729,7 +729,7 @@ fn query_all_approvals(
     _start_after: Option<String>,
     _limit: Option<u32>,
 ) -> StdResult<ApprovedForAllResponse> {
-    
+
     let ops = OPERATORS.load(deps.storage, owner).unwrap_or(vec![]);
 
     Ok(ApprovedForAllResponse {operators: ops})
@@ -782,19 +782,19 @@ mod tests {
     use cosmwasm_std::testing::{mock_dependencies_with_balance, mock_env, mock_info};
     use cosmwasm_std::{coins, from_binary};
 
-    
+
 
     fn int_mgs() -> InstantiateMsg{
 
-        InstantiateMsg { 
-            blocks_per_year: 5048093, 
+        InstantiateMsg {
+            blocks_per_year: 5048093,
             meta_url: "example.com".to_string(),
             denom: "ujuno".to_string(),
-            cost_for_6: Some(1), 
-            cost_for_5: Some(2), 
-            cost_for_4: Some(4), 
-            cost_for_3: Some(8), 
-            cost_for_2: Some(16), 
+            cost_for_6: Some(1),
+            cost_for_5: Some(2),
+            cost_for_4: Some(4),
+            cost_for_3: Some(8),
+            cost_for_2: Some(16),
             cost_for_1: Some(32),
         }
     }
@@ -881,7 +881,7 @@ mod tests {
         let auth_info = mock_info("bobby", &coins(200000, "ujuno"));
         let msg = ExecuteMsg::RegisterName { name: String::from("testname") , years: 3 , avatar_url: None, terra_address: None, secret_address: None, crypto_org_address: None, kava_address: None, persistence_address: None, starname_address: None, website: None, email: None, twitter: None, telegram: None, discord: None, instagram: None, reddit: None};
         let res2 = execute(deps.as_mut(), mock_env(), auth_info, msg);
-        
+
         assert_eq!(res2.is_err(), true);
 
         println!("{:?}", res1);
@@ -911,7 +911,7 @@ mod tests {
         let msg = ExecuteMsg::AddTime { name: String::from("testname") , years: 2 };
         let res3 = execute(deps.as_mut(), mock_env(), auth_info, msg);
         assert_eq!(res3.is_err(), true);
-        
+
         println!("{:?}", res1);
         println!("{:?}", res2);
         println!("{:?}", res3);
@@ -932,7 +932,7 @@ mod tests {
         let msg = ExecuteMsg::RegisterName { name: String::from("testname") , years: 2 , avatar_url: None, terra_address: None, secret_address: None, crypto_org_address: None, kava_address: None, persistence_address: None, starname_address: None, website: None, email: None, twitter: None, telegram: None, discord: None, instagram: None, reddit: None};
         let _res = execute(deps.as_mut(), mock_env(), auth_info, msg).unwrap();
 
-        
+
         let res = query(deps.as_ref(), mock_env(), QueryMsg::ResolveName { name : String::from("testname")}).unwrap();
         let value: OwnerResponse = from_binary(&res).unwrap();
         assert_eq!(Addr::unchecked("annie"), value.owner);
@@ -954,7 +954,7 @@ mod tests {
         let msg = ExecuteMsg::RegisterName { name: String::from("testname") , years: 2 , avatar_url: None, terra_address: None, secret_address: None, crypto_org_address: None, kava_address: None, persistence_address: None, starname_address: None, website: None, email: None, twitter: None, telegram: None, discord: None, instagram: None, reddit: None};
         let _res = execute(deps.as_mut(), mock_env(), auth_info, msg).unwrap();
 
-        
+
         let res = query(deps.as_ref(), mock_env(), QueryMsg::ResolveAttributes { name : String::from("testname")}).unwrap();
         let value: NameResponse = from_binary(&res).unwrap();
         assert_eq!(Name {id: String::from("testname") , expires: 10108531 , owner: Addr::unchecked("annie"), approvals: vec![], avatar_url: None, terra_address: None, secret_address: None, crypto_org_address: None, kava_address: None, persistence_address: None, starname_address: None, website: None, email: None, twitter: None, telegram: None, discord: None, instagram: None, reddit: None}, value.name);
@@ -1039,7 +1039,7 @@ mod tests {
         let owner = mock_info("annie", &coins(200000, "ujuno"));
 
         let res = execute(deps.as_mut(), mock_env(), owner, approve_msg);
-        
+
         assert_eq!(res.is_err(), false);
 
 
